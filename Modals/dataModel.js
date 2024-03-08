@@ -73,7 +73,7 @@ const dataModel = new mongoose.Schema({
         // Check if the current path has a default value defined
         if (schemaType.options.default !== undefined) {
             // Check if the field is set to null or undefined
-            if (this[path] === null || this[path] === undefined) {
+            if (this[path] === null || this[path] === "" || this[path] === undefined) {
                 // Apply the default value
                 this[path] = schemaType.options.default;
             }

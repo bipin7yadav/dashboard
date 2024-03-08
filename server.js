@@ -6,7 +6,7 @@ const DataSchema = require("./Modals/dataModel")
 const app = express()
 const port = 3003
 const jsonData = require("./Data/data.json");
-const { join } = require('path');
+const dataRoute = require("./Routes/dataRoute")
 
 dotenv.config({ path: "./config.env" });
 
@@ -14,7 +14,6 @@ const DB = process.env.DATABASE.replace(
     '<password>',
     process.env.DBPASSWORD
   );
-console.log(DB);
   mongoose.set("strictQuery", false);
   mongoose.connect(DB).then(() => {
     console.log("DB Connection Successful !!");
@@ -25,11 +24,8 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.post('/insertData',(req,res)=>{
-  insert()
-  res.send("Data  Inserted")
 
-})
+app.use('/api/getData',dataRoute)
 
 
 const insightDataModel = mongoose.model("insight", DataSchema);
@@ -41,11 +37,11 @@ const insightDataModel = mongoose.model("insight", DataSchema);
 
 const insert= async()=>{
   console.log('====================================');
-  console.log("DELETING DATA");
+  console.log("DELETING DATA OLD DATA");
   console.log('====================================');
   await insightDataModel.deleteMany()
   console.log('====================================');
-  console.log("INSERTING DATA");
+  console.log("INSERTING FRESH DATA");
   console.log('====================================');
   await insightDataModel.create(jsonData)
 
